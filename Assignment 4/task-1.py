@@ -1,6 +1,10 @@
 
-from hamcrest import none
-from sqlalchemy import null
+#from hamcrest import none
+#from sqlalchemy import null
+
+
+from cmath import sqrt
+import math
 
 
 class Graph:
@@ -26,10 +30,11 @@ class Graph:
         You are free to choose your own way to represent nodes and edges.
         """
 
-        self.weight_by_vertices[node_id] = weight
+        if not bool(self.weight_by_vertices):
+            self.max_vertex = node_id
+            self.second_max_vertex = node_id
 
-        if bool(self.weight_by_vertices):
-            
+        self.weight_by_vertices[node_id] = weight
 
         if weight > self.weight_by_vertices[self.max_vertex]:
             self.max_vertex = node_id
@@ -120,8 +125,24 @@ def astar_shortest_path(G, source_id, end_id, heuristic) :
     Return
     ----------
     A list of nodes (represented as: x1, y1, weight; x2, y2, weight; ...).
-    """
-    pass
+    
+    
+    distance = 
+    current_node_id = source_id
+    explored_nodes = [source_id]
+
+    while current_node_id != end_id:
+        current_node_id = minimize(current_node_id, heuristic(current_node_id, end_id), G)
+
+        explored_nodes.append(current_node_id)"""
+
+def minimize(current_node_id, distance, G):"""
+    neighbor_node_set = [current_node_id + (current_node_id[0],neighbor_node_set[1])]
+    for i in range(4):
+        neighbor_node_set"""
+
+
+
 
 
 def heuristic(a, b) : 
@@ -139,6 +160,18 @@ def heuristic(a, b) :
     ----------
     The distance as an integer.
     """
+    a_part_1 = b[0] - a[0]
+    b_part_1 = b[1] - a[1]
+
+    a_part = a_part_1 ** 2
+    b_part = b_part_1 ** 2
+
+
+    return int(
+        math.sqrt(
+            (b[0] - a[0]) ** 2 + (b[1] - a[1]) ** 2
+        ) 
+    )
 
     # Compute and return the Euclidean distance between a and b
 
@@ -170,6 +203,10 @@ if __name__ == '__main__':
     # Find the two nodes with the highest weights in the graph
     source_id = G.max_vertex
     end_id = G.second_max_vertex
+
+    print('source vertex ', source_id)
+    print('target vertex ', end_id)
+    print('heuristic ', heuristic(source_id,end_id))
 
     # Compute the path between the two nodes with the highest weight
     # The source node is the one with the highest weigth
