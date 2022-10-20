@@ -1,3 +1,5 @@
+# DSA Student 139
+
 from gettext import find
 from hashlib import new
 
@@ -7,6 +9,7 @@ class Edge:
         self.source = source
         self.end = end
         self.weight = weight
+        
 
 class Node:
     def __init__(self, node, weight) :
@@ -151,14 +154,11 @@ def minimum_spanning_tree(G) :
 
 if __name__ == '__main__':
 
-    input1 = "0, 5; 1, 2; 2, 1; 3, 8; 4, 7"
-    input2 = "0, 4, 3; 1, 2, 9; 2, 4, 5; 2, 3, 2; 3, 4, 4"
-
     # Read the input
     # The first line is made of a list of nodes, written as node_id, node_weight, separated by ;
-    nodes = input1.split('; ')
+    nodes = input().split('; ')
     # The second line is made of edges, written as source_node_id, end_node_id, edge_weight, separated by ;
-    edges = input2.split('; ')
+    edges = input().split('; ')
 
     # Build a directed graph from the input nodes and edges
     G = build_Graph(nodes, edges)
