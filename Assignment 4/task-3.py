@@ -1,7 +1,21 @@
+from gettext import find
+from hashlib import new
+
+
+class Edge:
+    def __init__(self, source, end, weight) :
+        self.source = source
+        self.end = end
+        self.weight = weight
+
+class Node:
+    def __init__(self, node, weight) :
+        self.id = node
+        self.weight = weight
 
 class Graph:
-    """Class to represent a Graph, as a list of weighted nodes and edges."""
-
+    nodes = []
+    edges = []
 
     def __init__(self) :
         """Function to initialize a Graph object"""
@@ -18,7 +32,7 @@ class Graph:
         
         You are free to choose your own way to represent nodes and edges.
         """
-        pass
+        self.nodes.append( Node(node_id, weight) )
 
     def add_edge(self, source_id, end_id, weight) : 
         """Function to add an edge to a Graph object.
@@ -33,7 +47,8 @@ class Graph:
         
         You are free to choose your own way to represent nodes and edges.
         """
-        pass
+        self.edges.append( Edge(source_id, end_id, weight) )
+
 
 
 def build_Graph(nodes, edges) :
@@ -81,6 +96,25 @@ def print_output(edges) :
     """
     # The expected output is a list of edges, separated by a semicolon, and printed as follow:
     # souce_id, end_id, edge_weight; souce_id, end_id, edge_weight; ...
+    for edge in edges[:-1]:
+        print(f'{edge.source}, {edge.end}, {edge.weight}', end="; ")
+    last_edge = edges[-1]
+    print(f'{last_edge.source}, {last_edge.end}, {last_edge.weight}')
+
+def use_weight(edge):
+    return edge.weight
+
+def find_set(node, parent):
+    if parent[node] != node:
+        return find_set (parent[node], parent)
+    else:
+        return node
+
+def union_set(node_x, node_y, parent):
+    parent[find_set(node_y, parent)] = find_set(node_x, parent)
+
+def edge_forms_cycle(edge, parent):
+    return find_set(edge.source,parent) == find_set(edge.end, parent)
 
 
 def minimum_spanning_tree(G) :
@@ -94,16 +128,37 @@ def minimum_spanning_tree(G) :
     ----------
     Can either be a subgraph (represented as a Graph object) or a list of edges (source_id, end_id, weight)
     """
-    pass
+    G.edges.sort(key=use_weight)
+
+    mst = []
+
+    parent = {}
+    for a_node in G.nodes:
+        parent[a_node.id] = a_node.id
+
+
+    for an_edge in G.edges:
+
+        if edge_forms_cycle(an_edge, parent):
+            pass
+        else:
+            union_set(an_edge.source, an_edge.end, parent)
+            mst.append(an_edge)
+
+    return mst
+
 
 
 if __name__ == '__main__':
 
+    input1 = "0, 5; 1, 2; 2, 1; 3, 8; 4, 7"
+    input2 = "0, 4, 3; 1, 2, 9; 2, 4, 5; 2, 3, 2; 3, 4, 4"
+
     # Read the input
     # The first line is made of a list of nodes, written as node_id, node_weight, separated by ;
-    nodes = input().split('; ')
+    nodes = input1.split('; ')
     # The second line is made of edges, written as source_node_id, end_node_id, edge_weight, separated by ;
-    edges = input().split('; ')
+    edges = input2.split('; ')
 
     # Build a directed graph from the input nodes and edges
     G = build_Graph(nodes, edges)
